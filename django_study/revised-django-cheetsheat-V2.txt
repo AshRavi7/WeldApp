@@ -1,0 +1,359 @@
+PIP INSTALL PIPENV #python dependensies
+
+STEP 1-> CREATE folder_name ->OPEN VScode and navigate to that folder_name 
+STEP 2-> Open terminal from VScode-> python -m django --version (check version)
+STEP 3-> terminal->django-admin startproject 'nameofyourproject' (a singal project can have multiple apps) # remove quotes 
+
+****->UNDERSTAND PROJECT-FOLDER STRUCTURE
+****->COMES WITH DEAFULT FILES
+****->FOCUS ONLY ON urls.py, settings.py and MAINLY manage.py 
+
+STEP 4-> terminal->cd nameofyourproject->pipenv shell->pipenv install->pip install django->python manage.py runsever # run django project 
+
+****->Every website has multiple webpages displaying different data. This can be achived in django be creating apps/routes/sub-folders in your main project-folder
+
+STEP 5-> terminal->CTRL+C->python manage.py startapp "nameofapp" 
+
+****->UNDERSTAND PROJECT-FOLDER STRUCTURE
+****->COMES WITH DEFAULT FILES
+****FOCUS ONLY ON**** 
+****->views.py(generate data to render a path/route), 
+****->models.py(generate database models/tables) , #any model you create inside models.py will refer to a class OOP
+****->admin.py( #to incorporate the database on the admin panel MUST ADD IN LINES BELOW)
+****-> Example- from .models import Post
+		admin.site.register(Post)
+****->tests.py()
+
+****->LETS ADD SOME INFORMATION
+STEP 6-> views.py->add a function to render a html page
+STEP 7-> go to nameofapp/urls.py ->add a route path to the function
+STEP 8-> go to settings.py->add 'app_name.apps.App_nameConfig' #check once from app_name/apps.py/class_name
+STEP 9->terminal->python manage.py runserver 
+****->HTML templates must reside inside app-folder->creating template-folder->inside resides .html files
+****->Custom CSS stylesheet can be inside app-folder->creating static-folder->inside resides .css files
+
+
+
+****-> ACTIVATE THE ADMIN 
+STEP 1-> OPEN VScode and navigate to the nameofyourdjangoapp
+STEP 2-> terminal->cd nameofyourdjangoproject
+TYPE python manage.py makemigrations followed by python manage.py migarte
+STEP 3-> terminal-> TYPE python manage.py createsuperuser
+****ENTER CREDENTIALS****
+
+****->DATABASE GENERATIONS
+	[Working with databases- provides functionality with testing on sqlite3 and moved
+	into production using postgres with zero to minimum code changes .Only change has 
+	to be done in the settings.py file.]
+STEP 1->nameofapp/models.py-> 
+****->TYPE from django.contrib.auth.models import User
+#example model-		class Post(models.Model):
+    				title = models.CharField(max_length=100)
+    				content = models.TextField()
+    				date_posted = models.DateTimeField(default=timezone.now)
+STEP 2-> This has to be reflected in the admin panel ->go to admin.py-> 
+TYPE 	from .models import class_names
+	admin.site.register(class_names)
+
+*****************************************************************************************************************************************************************************
+CRUD(CREATE,READ,UPDATE,DELETE) operations on the model-
+****->terminal->python manage.py shell
+from nameofapp.models import Post
+from django.contrib.auth.models import User
+User.objects.all() 
+User.objects.first()
+user=User.objects.filter(username='ash') .first()
+user.id->returns id 
+post_1=Post(title="Blog 1", content="First post", author=user)
+Post.objects.all() will return empty set
+post_1.save()
+poster=Post.objects.all() will return list contents 
+poster.content --> will return value associated with particular user 
+poster.author.email --> return mail id of the author 
+
+user.post_set
+user.post_set.all()--> returns the posts posted by the user 
+user.post_set.create(title="Blog 3", content="Third Post") #implicitly creates 
+a post w.r.t user
+Post.objects.all() --> will return 3 post items in list 
+
+Basically go to views.py and type --> 
+from .models import Post
+inside def-->Post.objects.all() 
+
+***NOTE-THE DATA WILL BE REFLECTED FROM THE USER INTERFACE BY GOING TO 127.0.0.1/admin******************************************************************************************************
+
+**To avoid this , we will utilize inbuilt django authentication and security features***********************************************************************
+
+**Let us add users to our website via login and ensure security**
+
+****** pip install django-crispy-forms********
+
+STEP 1-> CREATE another app in your existing django project , TYPE python manage.py startapp user
+
+STEP 2-> Create a forms.py 
+
+*** ADD INSIDE 
+from django import forms # django inbuilt form creation 
+from django.contrib.auth.models import User # inbuilt user database track
+from django.contrib.auth.forms import UserCreationForm # inbuilt FORM STYLE 
+
+
+class UserRegisterForm(UserCreationForm): # creating a user db 
+    email = forms.EmailField() # validate user-email field 
+
+    class Meta: # generating db fields 
+        model = User # model/table name User 
+        fields = ['username', 'email', 'password1', 'password2']
+
+STEP 3-> Inside views.py 
+
+***ADD
+
+from django.shortcuts import render, redirect #redirect to another page
+from django.contrib import messages # flash messages to  user 
+from .forms import UserRegisterForm # importing UserModalFormDB
+
+
+def register(request): # this function is called by going to /register
+    if request.method == 'POST': # post action by user
+        form = UserRegisterForm(request.POST) #  form dislay call
+        if form.is_valid(): #check 
+            form.save()
+            username = form.cleaned_data.get('username') # styling the form filds
+            messages.success(request, f'Account created for {username}!') # flash message redirected on the home page
+            return redirect('blog-home') 
+    else:
+        form = UserRegisterForm() # display empty form 
+    return render(request, 'users/register.html', {'form': form}) #RENDERS ON BROWSER
+
+STEP 4-> Create templates/users/register.html inside user app
+***ADD 
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %} <!--CRIPSY BOOTSTRAP FORM THEME -->
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %} <!--validation token check #MUST HAVE-->
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Join Today</legend>
+                {{ form|crispy }} <!--FORM FEILD FROM registerviews.py,crispy adds style-->
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Sign Up</button>
+            </div>
+        </form>
+        <div class="border-top pt-3"> <!--padding-top-3px-->
+            <small class="text-muted">
+                Already Have An Account? <a class="ml-2" href="#">Sign In</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %}
+
+STEP 5-> INSIDE settings.py 
+***ADD  
+CRISPY_TEMPLATE_PACK = 'bootstrap4' #to encapsulate CRISPY FORM BOOTSTRAP FEATURES
+Under INSTALLED APPS->>>> ADD LIST ITEM 
+'user.apps.UsersConfig',
+'crispy_forms'
+*******************************************
+NOTE-
+2. CRISPY FORMS REF LINK -> https://django-crispy-forms.readthedocs.io/en/latest/install.html
+3. DJANGO/MESSAGES REF LINK-> https://docs.djangoproject.com/en/3.0/ref/contrib/messages/
+3. STATIC FILES REF LINK-> https://docs.djangoproject.com/en/3.0/howto/static-files/
+4. Django SIGNALS REF LINK->https://simpleisbetterthancomplex.com/tutorial/2016/07/28/how-to-create-django-signals.html
+
+********************************************************************************************************************************************************
+ 
+Now , we will see how to USER LOGIN AND LOGOUT FUNCTIONALITY(ENABLE SECURITY AWAY FROM ADMIN PERMISSIONS) 
+ALSO ENABLE USER PROFILE WITH IMAGE.
+
+STEP 1->Inside urls.py
+***ADD 
+
+from django.contrib.auth import views as auth_views # django inbuilt different view structures for different users 
+from django.conf import settings # we will be adding information inside settings.py hence need to import 
+from django.conf.urls.static import static  # Websites generally need to serve additional files such as images, JavaScript, or CSS. In Django, we refer to these files as “static files”
+
+***ADD url patterns 
+path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'), # djangos inbuilt auth_views will allow user to nagivate across login->profile home page 
+path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'), # djangos inbuilt auth_views will allow user to nagivate across logout->signUp page 
+ 
+STEP 2-> Inside urls.py 
+*** After login, the user must be able to see the posts along with his successful login to his/her profile and the look of the website also must change 
+
+*** ADD another urlpattern
+path('profile/', user_views.profile, name='profile'),
+
+STEP 3-> Inside User.views.py file , 
+*** ADD 
+@login_required #decorator to access profile where login is required
+def profile(request):
+    return render(request, 'users/profile.html') # create profile.html
+
+STEP 4-> Inside blog/base.html
+***ADD inside <body> ->> <div> tag ->> 
+		{% if user.is_authenticated %} <!--check is user is in Db -->
+                <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+                <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+              	{% else %}
+                <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+              	{% endif %}
+
+ ***TIME TO ADD USER-PROFILE DATA-> USERNAME & IMAGE 
+STEP 5->INSIDE models.py 
+***ADD 
+from django.db import models #default
+from django.contrib.auth.models import User #default
+ 
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE) #delete user , proile associated with user gets deleted too
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics') #default location and as a user is created and uploads pics, it gets added to profile_pics folder
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
+STEP 6-> Inside admin.py 
+***ADD 
+from .models import Profile
+
+admin.site.register(Profile)
+
+
+Step 7-> Inside users app-> create signals.py(USER TRIGGER/EVENT LISTENER)
+
+*The signals are utilities that allow us to associate events with actions. We can develop a function that will run when a signal calls it.*
+
+Inside signals.py ***ADD 
+from django.db.models.signals import post_save #The django.db.models.signals module defines a set of signals sent by the model system.
+from django.contrib.auth.models import User
+from django.dispatch import receiver
+from .models import Profile
+
+
+@receiver(post_save, sender=User) # With the @receiver decorator, we can link a signal with a function:
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+        
+
+
+@receiver(post_save, sender=User)
+def save_profile(sender, instance, **kwargs):
+    instance.profile.save()
+
+**Every time a models instance ends to run its save() method, the create_profile & save_profile function will start to work.**
+
+
+STEP 8->GO TO admin/users/profile -> add a profile to yourself 
+
+**PLAY WITH THE API**
+OPEN SHELL->
+>>from django.contrib.auth.models import User
+>>user=User.objects.filter(username='ash')
+>>user
+>>user.profile.image 
+
+>>user.profile.image
+*************************************************************************************************************************************************************************************************************************
+***DISCLAIMER--NOT A GOOD IDEA TO UPDATE USER IMAGE FROM ADMIN PANEL , INSTEAD HE/SHE SHOULD BE ABLE TO UPDATE THE USER DETAILS FROM THE FRONTEND USER INTERFACE ITSELF 
+
+*************************************************************************************************************************************************************************************************************************
+
+REF DOC- DJANGO-POSTS-CRUD
+
+GENERIC CLASS BASED VIEWS ARE USED FOR CREATE,READ,UPDATE,DELETE POSTS W.R.T A USER - (django does the background work for us)
+1.ListView-Display contents in a list view format-> click on a list item -> it will redirect you to that item information.( basically can be used to rewrite the home route func inside views.py)
+
+STEP 1-> INSIDE blog/views.py
+**ADD 
+from django.views.generic import ListView
+
+class PostListView(Listview):
+	model=Post #what model to query to display the view fields
+
+
+STEP 2-> INSIDE urls.py 
+**ADD 
+from blog import views as blog_views
+
+**UPDATE the path routing the home function TO PostListView function 
+Example--> path('',blog_views.PostListView.as_view(),name='blog-home')
+
+Open terminal->Execute-> python manage.py runserver to see an error 'TemplateDoesNotExist' and its looking for 'blog/post_list.html' which is similar to the naming convention of <app>/<model>_<viewtype>.html
+Now, since we already have a template for our home-view ..
+
+STEP 3-> INSIDE blog/views.py 
+** CONTINUE TO ADD 
+class PostListView(Listview):
+	model=Post
+	template_name='blog/home.html' #<app>/<model>_<viewtype>.html
+	context_object_name='posts' # previously , our post-data were looped inside 'posts' object template which is already defined inside our home function.So, we will just create another object-variable 'context_object_name' to reference the same post-data 'posts' object template 
+
+Now, reload / run the server again to see the home page being routed displaying original posts 
+Also, we notice the posts are displayed in an order of oldest->newest ,we want the posts to be displayed latest->oldest ..to do so
+
+**CONTINUE TO ADD..
+class PostListView(Listview):
+	model=Post
+	template_name='blog/home.html' #<app>/<model>_<viewtype>.html
+	context_object_name='posts'
+	ordering=['-date_posted'] # latest to oldest posts 
+
+STEP 4-> INSIDE blog/views.py
+Now, we create another generic class view Detail which helps in detailing out the information of individual posts on click of each post-> ## basically gives details about the post ##
+**ADD
+from django.views.generic import DetailView
+
+class PostDetailView(DetailView): 
+	model=Post
+
+NOW, We have to create a url pattern for the above class function ..
+-->>INSIDE urls.py **ADD route 
+
+FOR INSTANCE, IF WE WANTED TO VIEW THE INFO ABOUT BLOG/POST/1..we simply place these variables inside our route ,for example below ..
+path('post/<int:pk>/',blog_views.PostDetailView.as_view(),name='post-detail') # specifying pk(primary key) will grab integer based posts where each post is assigned with a user pk  
+
+Now, we need a template to render information about the post-> CREATE post_detail.html inside templates folder and copy the contents from home.html (MAKE SURE TO EDIT THE CHANGES BASED ON REQUIREMENT) **REFER CODE**
+ALSO REMEMBER -> When working with DetailViews-> it expects the context of the template to be called object-> TO DO THIS , inside post_detail.html ,change from {{post.something}} TO {{object.something}}
+
+**QUICKLY RELOAD THE SERVER WEBPAGE -> and type blog/post/1 in the URL which you can see will navigate to the first blog-post of the site. 
+**Now ,the GOAL was to click on each post and it will redirect to that particular post for displaying information about that related post..we can do this by going to home.html and adding url route to the h2 tag 
+
+Inside home.html-> alter h2 tag-> inside a tag -> update href to '{% url 'post-detail' post.id %}'
+
+**RELOAD WEBPAGE TO SEE THE CHANGED EFFECTS**
+
+STEP 5-> INSIDE blog/views.py
+
+**Now,we create another class based generic view CREATEVIEW which is used to create new posts by the user
+from django.views.generic import CreateView
+
+class PostCreateView(CreateView):
+	model=Post #referencing the Post model
+	field=['title','content'] # these are the fields user can create w.r.t a blog-post
+
+NOW, inside urls.py-> add another route 
+path('post/new/',blog_views.PostCreateView.as_view(),name='post-create') ...this path will reference to the template 'post_form.html' inside blog/templates
+
+# basically telling our class based view CreateView to work with our form model Post with displaying fields TITLE and CONTENT
+
+**RELOAD THE PAGE-> IN THE URL-> GO TO blog/new/-> You will see the form but when you submit -> THROWS INTEGRITY ERROR..WHY? Cause it does not recognize the user.id
+
+RESOLVING BY, 
+**EDITING THE CLASS PostCreateView AND ADD
+
+def form_valid(self,form):
+	form.instance.author=self.request.user
+	return super().form_valid(form) 
+
+**FORM GETS ADDED SUCCESSFULLY** But django still does not know where to redirect after the post gets created 
+
+GO TO blog/modelspy-> **ADD
+from django.urls import reverse #instead of redirect i can also use reverse 
+ 	def get_absolute_url(self):
+		return reverse('post-detail',kwargs={'pk':self.pk}
+ 

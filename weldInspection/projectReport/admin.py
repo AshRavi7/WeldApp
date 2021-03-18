@@ -1,8 +1,6 @@
 from django.contrib import admin
-from .models import project,inspec_user,location_discipline,weld_action,heat_calc,drawing,weld,gallery,activity_description,activity_inspection_action
+from .models import project,location_discipline,weld_action,heat_calc,drawing,weld,gallery,activity_description,activity_inspection_action,Profile
 
-# Register your models here.
-admin.site.register(inspec_user)
 admin.site.register(project)
 admin.site.register(location_discipline)
 admin.site.register(weld_action)
@@ -12,4 +10,4 @@ admin.site.register(weld)
 admin.site.register(gallery)
 admin.site.register(activity_description)
 admin.site.register(activity_inspection_action)
-
+admin.site.register(Profile)

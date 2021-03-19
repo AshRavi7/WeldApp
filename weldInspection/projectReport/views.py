@@ -44,3 +44,9 @@ def logout_request(request):
 
 def profile(request):
     return render(request, 'projectReport/profile.html')
+
+def new_inspect(request):
+	pass
+
+def overview(request):
+	return render(request,'projectReport/inspection_view.html')

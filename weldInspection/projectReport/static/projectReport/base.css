@@ -115,3 +115,17 @@ body {
     font-size: 1rem;
     text-transform: uppercase;
   }
+
+  #one:hover {
+    color:black;
+}
+#two:hover {
+    color:black;
+}
+
+#one:active{
+  color:greenyellow;
+}
+#two:active{
+  color:greenyellow;
+}

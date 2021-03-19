@@ -10,6 +10,8 @@ urlpatterns = [
     path('profile/',views.profile,name='projectReport-profile'),
     path("login/", views.login_request, name='projectReport-login'),
     path("logout/", views.logout_request, name='projectReport-logout'),
+    path("new/", views.new_inspect, name='projectReport-new'),
+    path("overview/", views.overview, name='projectReport-overview'),
     # path('<int:pk>/',views.DetailView.as_view(), name='detail'),
     # # ex: /polls/5/results/
     # path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),

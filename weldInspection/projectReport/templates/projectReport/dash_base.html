@@ -1,4 +1,5 @@
 {% load static %}
+{% load widget_tweaks %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,37 +13,37 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <!-- <meta name="theme-color" content="#7952b3"> -->
-  <title>Weld Inspection</title>
   <link href="{% static 'projectReport/base.css' %}" rel="stylesheet">
+  <title>Weld Inspection</title>
+
 </head>
 
 <body>
   <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-      <div class="container">
-        <a class="navbar-brand mr-4 align-items-left " href="projectReport:projectReport-base">NYMO</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
-          aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarToggle">
-          <!-- <div class="navbar-nav mr-auto">
+      <a class="navbar-brand mr-4 align-items-left " href="projectReport:projectReport-base">NYMO</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+        aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarToggle">
+        <!-- <div class="navbar-nav mr-auto">
             <a class="nav-item nav-link" href="{% url 'projectReport:projectReport-base' %}">Home</a>
 
           </div> -->
-          <!-- Navbar Right Side -->
-          <div class="navbar-nav mr-auto">
-            {% if user.is_authenticated %}
-            <a class="nav-item nav-link" href="{% url 'projectReport:projectReport-profile' %}">Profile</a>
-            <a class="nav-item nav-link" href="{% url 'projectReport:projectReport-logout' %}">Logout</a>
-            {% else %}
-            <a class="nav-item nav-link" href="{% url 'projectReport:projectReport-login' %}">Login</a>
-            <a class="nav-item nav-link" href="{% url 'projectReport:projectReport-signup' %}">Register</a>
-            {% endif %}
-          </div>
+        <!-- Navbar Right Side -->
+        <div class="navbar-nav mr-auto">
+          {% if user.is_authenticated %}
+          <a class="nav-item nav-link" href="{% url 'projectReport:projectReport-profile' %}">Profile</a>
+          <a class="nav-item nav-link" href="{% url 'projectReport:projectReport-logout' %}">Logout</a>
+          {% else %}
+          <a class="nav-item nav-link" href="{% url 'projectReport:projectReport-login' %}">Login</a>
+          <a class="nav-item nav-link" href="{% url 'projectReport:projectReport-signup' %}">Register</a>
+          {% endif %}
         </div>
+      </div>
       </div>
     </nav>
   </header>
@@ -54,8 +55,19 @@
   {% endfor %}
   {% endif %}
   {% block content %}{% endblock %}
+  <!-- <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">{% block pipeline %}{% endblock %}</main> -->
 
-  <!-- <h1 class="h2">Dashboard</h1>
+</body>
+
+</html>
+<!-- <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+
+  </div> -->
+<!-- {% block pipe %}{% endblock %} -->
+
+
+
+<!-- <h1 class="h2">Dashboard</h1>
           <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
               <button class="btn btn-sm btn-outline-secondary">Share</button>
@@ -70,7 +82,7 @@
 
         <canvas class="my-4" id="myChart" width="900" height="380"></canvas> -->
 
-  <!-- <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+<!-- <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
       <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Company name</a>
       <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -84,7 +96,7 @@
     </header> -->
 
 
-  <!--     
+<!--     
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Dashboard</h1>
@@ -234,10 +246,10 @@
       </div>
     </div> -->
 
-  <!-- jQuery first, then Tether, then Bootstrap JS. -->
-  <!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script> -->
-  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script> -->
-</body>
+<!-- jQuery first, then Tether, then Bootstrap JS. -->
+<!-- <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script> -->
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script> -->
+<!-- </body>
 
-</html>
+</html> -->

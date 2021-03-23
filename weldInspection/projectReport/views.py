@@ -1,8 +1,18 @@
+# from WeldApp.weldInspection import projectReport
 from django.contrib.auth import login,authenticate,logout
-from .forms import NewUserForm
+from .forms import NewUserForm,projectForm,locationForm,weldActionForm,drawingForm,weldForm,activitydescriptionForm,activityinspectionForm,heatForm,galleryForm
 from django.shortcuts import render, redirect
 from django.contrib import messages #import messages
 from django.contrib.auth.forms import AuthenticationForm 
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView
+)
+from .models import project,location_discipline,drawing,weld,weld_action,activity_inspection_action,activity_description,heat_calc,gallery
 
 def home(request):
     return render(request, 'projectReport/dash_base.html')
@@ -46,7 +56,44 @@ def profile(request):
     return render(request, 'projectReport/profile.html')
 
 def new_inspect(request):
-	pass
+	return render(request,'projectReport/new_inspection.html')
 
 def overview(request):
 	return render(request,'projectReport/inspection_view.html')
+
+# class ProjCreateView(LoginRequiredMixin, CreateView):
+#     model = project
+#     fields = "__all__"
+
+#     def form_valid(self, form):
+#         form.instance.project_user_name = self.request.user
+#         return super().form_valid(form)
+
+def proj(request):
+	if request.method == 'POST':
+		form = projectForm(request.POST)
+		if form.is_valid():
+			form.save()   
+	form = projectForm
+	return render(request, 'projectReport/flow/project.html', {'form': form})
+
+def loc(request):
+	return render(request,'projectReport/flow/location.html')
+
+def drawing(request):
+	return render(request,'projectReport/flow/drawing.html')
+
+def weld(request):
+	return render(request,'projectReport/flow/weld.html')
+
+def weld_action(request):
+	return render(request,'projectReport/flow/weld_action.html')
+
+def act(request):
+	return render(request,'projectReport/flow/activity.html')
+
+def heat(request):
+	return render(request,'projectReport/flow/heat.html')
+
+def gallery(request):
+	return render(request,'projectReport/flow/gallery.html')

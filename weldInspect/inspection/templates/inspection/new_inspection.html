@@ -1,0 +1,19 @@
+{% extends "inspection/base.html" %}
+{% block sidebar %}
+<div class="col-md-4">
+    <div class="content-section">
+      <h4>Select category.</h4>
+        <ul class="list-group">
+          <li><a class="nav-item nav-link" href="{% url 'inspection-project' %}">Project</a></li>
+          <li><a class="nav-item nav-link" href="{% url 'inspection-location' %}">Location</a></li>
+          <li><a class="nav-item nav-link" href="{% url 'inspection-weldAction' %}">WeldAction</a></li>
+          <li><a class="nav-item nav-link" href="{% url 'inspection-drawing' %}">Drawing</a></li>
+          <li><a class="nav-item nav-link" href="{% url 'inspection-weld' %}">Weld</a></li>
+          <li><a class="nav-item nav-link" href="{% url 'inspection-inspection' %}">Activity Inspection</a></li>
+          <li><a class="nav-item nav-link" href="{% url 'inspection-heat' %}">Heat Calculation</a></li>
+          <li><a class="nav-item nav-link" href="{% url 'inspection-gallery' %}">Photo</a></li>
+        </ul>
+      </p>
+    </div>
+  </div>
+{% endblock sidebar %}

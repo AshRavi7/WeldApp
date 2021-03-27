@@ -1,0 +1,11 @@
+{% extends "inspection/base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <h4>Project # {{ object.weld_id}}</h4>
+      </div>
+      <h5 class="article-title">Weld number: {{ object.weld_number }}</h5>
+    </div>
+  </article>
+{% endblock content %}

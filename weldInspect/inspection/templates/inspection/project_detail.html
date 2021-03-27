@@ -1,0 +1,13 @@
+{% extends "inspection/base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="#">{{ object.project_user_name }}</a>
+        <h6>Date peformed: {{ object.data_perform|date:"F d, Y" }}</h6>
+      </div>
+      <h5 class="article-title">Project #: {{ object.project_number }}</h5>
+      <h5 class="article-content">Report #: {{ object.report_number }}</h5>
+    </div>
+  </article>
+{% endblock content %}

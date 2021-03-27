@@ -1,0 +1,15 @@
+{% extends "inspection/base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <h4>Project # {{ object.heat_calc_id}}</h4>
+      </div>
+      <h5 class="article-title">current_A: {{ object.current_A}}</h5>
+      <h5 class="article-content">voltage_V: {{ object.voltage_V }}</h5>
+      <h5 class="article-content">time_SS: {{ object.time_SS }}</h5>
+      <h5 class="article-content">length_MM: {{ object.length_MM }}</h5>
+      <h5 class="article-content">heat_input: {{ object.heat_input }}</h5>
+    </div>
+  </article>
+{% endblock content %}

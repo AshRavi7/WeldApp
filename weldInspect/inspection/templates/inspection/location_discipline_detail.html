@@ -7,6 +7,7 @@
       </div>
       <h5 class="article-title">Location: {{ object.location_name }}</h5>
       <h5 class="article-content">Discipline: {{ object.discipline_name }}</h5>
+      <a href="{% url 'inspection-new' %}" class="btn btn-primary">Back to Inspection</a>
     </div>
   </article>
 {% endblock content %}

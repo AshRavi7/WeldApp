@@ -1,15 +1,45 @@
-# from django.forms import fields
-# from .models import project
-# from django import forms
+from django.forms import fields
+from .models import activity_inspection_action, drawing, gallery, heat_calc, project,location_discipline, weld, weld_action
+from django import forms
 
-# class projectForm(forms.ModelForm):
-#     class Meta:
-#         model = project
-#         fields="__all__"
-#     def __init__(self, *args, **kwargs):
-#         user_id = kwargs.pop('user_id', None)
-#         super(projectForm, self).__init__(*args, **kwargs)
-#         if user_id is not None:
-#             self.fields['project_user_name'].queryset = project.objects.filter(user=user_id)
-#         else:
-#             self.fields['project_user_name'].queryset = project.objects.none()
+
+class projectForm(forms.ModelForm):
+    class Meta:
+        model = project
+        fields=['project_number','report_number','data_perform']
+
+class LocationForm(forms.ModelForm):
+    class Meta:
+        model = location_discipline
+        fields=['location_name','discipline_name']
+
+class DrawingForm(forms.ModelForm):
+    class Meta:
+        model = drawing
+        fields=['drawing_number']
+    
+class WeldForm(forms.ModelForm):
+    class Meta:
+        model = weld
+        fields=['weld_number']
+
+class WeldActionForm(forms.ModelForm):
+    class Meta:
+        model = weld_action
+        fields=['during_welding','before_welding','after_welding']
+
+class ActInspectionForm(forms.ModelForm):
+    class Meta:
+        model = activity_inspection_action
+        fields=['according','not_according','correction_action','comment','act_desp_action_descp']
+    
+
+class HeatForm(forms.ModelForm):
+    class Meta:
+        model = heat_calc
+        fields=['current_A', 'voltage_V','time_SS','length_MM']
+
+class GalleryForm(forms.ModelForm):
+    class Meta:
+        model = gallery
+        fields=['photo']

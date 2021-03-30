@@ -4,8 +4,10 @@
     <div class="media-body">
       <div class="article-metadata">
         <div class="media">
-            <img class="rounded-circle account-img" src="{{ object.photo.url }}">
+            <img class="rounded-circle account-img" src="{{ inspection.gallery.photo.url }}">
       </div>
+      <a href="{% url 'inspection-new' %}" class="btn btn-primary">Back to Inspection</a>
+    </div>
     </div>
   </article>
 {% endblock content %}

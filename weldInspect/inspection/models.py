@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone
+from datetime import datetime 
 from django.contrib.auth.models import User
 from django.urls import reverse
 from PIL import Image
@@ -8,7 +8,7 @@ from PIL import Image
 class project(models.Model):
     project_number=models.IntegerField(primary_key=True)
     report_number=models.IntegerField(unique=True)
-    data_perform=models.DateTimeField(default=timezone.now)
+    data_perform=models.DateTimeField(default=datetime.now())
     project_user_name=models.ForeignKey(User,on_delete=models.CASCADE)
     
     def __str__(self):
@@ -25,7 +25,7 @@ class location_discipline(models.Model):
     location_discipline_id=models.ForeignKey(project,on_delete=models.CASCADE)
     
     def __str__(self):
-        return str(self.location_name)
+        return f'Location: {self.location_name} Discipline: {self.discipline_name}'
 
     # def get_absolute_url(self):
     #     return reverse('location-detail', kwargs={'pk': self.pk})
@@ -40,7 +40,7 @@ class weld_action(models.Model):
     weld_action_project_id=models.OneToOneField(project,on_delete=models.CASCADE,primary_key=True)
     
     def __str__(self):
-        return str(self.weld_action_project_id)
+        return  f' during_welding: {self.during_welding} before_welding: {self.before_welding} after_welding: {self.after_welding}'
 
     # def get_absolute_url(self):
     #     return reverse('weldAction-detail', kwargs={'pk': self.pk})
@@ -76,7 +76,7 @@ class drawing(models.Model):
     drawing_id=models.ForeignKey(project,on_delete=models.CASCADE)
     
     def __str__(self):
-        return str(self.drawing_number)
+        return f'drawing_number: {self.drawing_number}'
 
     # def get_absolute_url(self):
     #     return reverse('drawing-detail', kwargs={'pk': self.pk})
@@ -86,7 +86,7 @@ class weld(models.Model):
     weld_id=models.ForeignKey(drawing,on_delete=models.CASCADE)
     
     def __str__(self):
-        return str(self.weld_number)
+        return f'weld:{self.weld_number}'
 
     # def get_absolute_url(self):
     #     return reverse('weld-detail', kwargs={'pk': self.pk})
@@ -94,7 +94,7 @@ class weld(models.Model):
     #     return reverse('inspection-new')
 
 class gallery(models.Model):
-    photo=models.ImageField(upload_to='photo_pics')
+    photo=models.ImageField(upload_to='photo_pics',default='weld.png')
     photo_report_id=models.OneToOneField(project,on_delete=models.CASCADE,primary_key=True)
     
     def __str__(self):
@@ -136,7 +136,7 @@ class activity_inspection_action(models.Model):
     act_desp_action_descp=models.ForeignKey(activity_description,on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.act_desp_action_descp)
+        return f' according: {self.according} not_according: {self.not_according} correction_action: {self.correction_action} comment: {self.comment} description: {self.act_desp_action_descp}'
 
     # def get_absolute_url(self):
     #     return reverse('act_inspection_action', kwargs={'pk': self.pk})

@@ -1,4 +1,6 @@
-from django.shortcuts import render, get_object_or_404,redirect
+from typing import List
+from django.db.models.query import QuerySet
+from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
@@ -9,10 +11,10 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from .models import activity_inspection_action, heat_calc, location_discipline, project,drawing,weld,weld_action,gallery
+from .models import *
 from django.contrib.auth.decorators import login_required
-from .forms import projectForm,LocationForm,DrawingForm,WeldForm,WeldActionForm,ActInspectionForm,HeatForm,GalleryForm
-# from django.urls import reverse
+from .forms import *
+from .filters import ProjectFilter
 
 def home(request):
     return render(request, 'inspection/base.html')
@@ -22,75 +24,6 @@ def about(request):
 
 def new(request):
     return render(request,'inspection/new_inspection.html')
-
-# class ProjectCreateView(LoginRequiredMixin, CreateView):
-#     model = project
-#     fields=['project_number','report_number','data_perform']
-
-#     def form_valid(self, form):
-#         form.instance.project_user_name = self.request.user
-#         return super().form_valid(form)
-
-# class LocationCreateView(LoginRequiredMixin, CreateView):
-#     model = location_discipline
-#     fields = ['location_name','discipline_name']
-#     def form_valid(self, form):
-#         form.instance.project_user_name = self.request.user
-#         obj=project.objects.filter(project_user_name=self.request.user).values('project_number')
-#         form.instance.location_discipline_id=int(obj[0]['project_number'])
-#         return super().form_valid(form)
-
-# class DrawingCreateView(LoginRequiredMixin, CreateView):
-#     model = drawing
-#     fields = "__all__"
-
-#     def form_valid(self, form):
-#         form.instance.project_user_name = self.request.user
-#         return super().form_valid(form)
-
-# class WeldCreateView(LoginRequiredMixin, CreateView):
-#     model = weld
-#     fields = "__all__"
-
-#     def form_valid(self, form):
-#         form.instance.project_user_name = self.request.user
-#         return super().form_valid(form)
-
-
-# class WeldActionCreateView(LoginRequiredMixin, CreateView):
-#     model = weld_action
-#     fields = "__all__"
-
-#     def form_valid(self, form):
-#         form.instance.project_user_name = self.request.user
-#         return super().form_valid(form)
-
-
-
-# class HeatCreateView(LoginRequiredMixin, CreateView):
-#     model = heat_calc
-#     fields=['current_A', 'voltage_V','time_SS','length_MM','heat_calc_id']
-
-#     def form_valid(self, form):
-#         form.instance.project_user_name = self.request.user
-#         obj=heat_calc
-#         form.instance.heat_input=obj.activate_calculation(form.instance.current_A,form.instance.voltage_V,form.instance.time_SS,form.instance.length_MM)
-#         return super().form_valid(form)
-# class GalleryCreateView(LoginRequiredMixin, CreateView):
-#     model = gallery
-#     fields='__all__'
-    
-#     def form_valid(self, form):
-#         form.instance.project_user_name = self.request.user
-#         return super().form_valid(form)
-
-# class InspectionCreateView(LoginRequiredMixin, CreateView):
-#     model = activity_inspection_action
-#     fields='__all__'
-    
-#     def form_valid(self, form):
-#         form.instance.project_user_name = self.request.user
-#         return super().form_valid(form)
 
 
 @login_required
@@ -231,3 +164,138 @@ def gallery_view(request):
 class GalleryDetailView(DetailView):
     model = gallery
     template_name='inspection/gallery_detail.html'
+
+@login_required
+def overview(request):
+      return render(request,'inspection/overview.html')
+
+class projectListView(ListView):
+    model=project
+    template_name='inspection/project_list.html'
+
+    def get_context_data(self, **kwargs):
+        context=super().get_context_data(**kwargs)
+        context['filter']=ProjectFilter(self.request.GET,queryset=self.get_queryset())
+        return context
+
+
+@login_required
+def overall_view(request,proj_value):
+    loc_obj=location_discipline.objects.select_related('location_discipline_id').get(location_discipline_id_id=proj_value)
+    weld_action_obj=weld_action.objects.select_related('weld_action_project_id').get(weld_action_project_id_id=proj_value)
+    drawing_obj=drawing.objects.select_related('drawing_id').get(drawing_id_id=proj_value)
+    value=drawing_obj.drawing_number
+    weld_obj=weld.objects.select_related('weld_id').get(weld_id_id=value)
+    inspection_obj=activity_inspection_action.objects.select_related('inspection_id').filter(inspection_id_id=proj_value)
+    context={'location':loc_obj,'weld_action':weld_action_obj,'drawing':drawing_obj,'weld':weld_obj,'inspection':inspection_obj}
+    return render(request, 'inspection/overall.html', context)
+        
+    #         form = GalleryForm(request.POST)
+    #         if form.is_valid():
+    #             obj=form.save(commit=False)
+    #             obj.photo_report_id=project.objects.filter(project_user_name_id=request.user.id).first()
+    #             obj.save()
+    #             return redirect('gallery-detail',pk=obj.pk)
+    # form = GalleryForm()
+    # return render(request, 'inspection/gallery_form.html', {'form': form})
+# @login_required
+# def proj_overview(request):
+#     data=project.objects.filter(project_user_name_id=request.user.id)
+#     return render(request,"inspection/proj_overview.html",{'data':data})
+
+# @login_required
+# def loc_overview(request):
+#     # user=project.objects.filter(project_user_name_id=request.user.id).values_list('project_number', flat=True)
+#     number = project.objects.filter(project_user_name_id=request.user.id)
+#     data=location_discipline.objects.filter(location_discipline_id=number)
+#     return render(request,"inspection/loc_overview.html",{'data':data})
+
+# @login_required
+# def weldact_overview(request):
+#     data=weld_action.objects.all()
+#     return render(request,"inspection/proj_overview.html",{'data':data})
+
+
+
+
+# @login_required
+# def draw_overview(request):
+#     data=project.objects.filter(project_user_name_id=request.user.id)
+#     return render(request,"inspection/proj_overview.html",{'data':data})
+
+
+
+
+
+
+
+
+
+# class ProjectCreateView(LoginRequiredMixin, CreateView):
+#     model = project
+#     fields=['project_number','report_number','data_perform']
+
+#     def form_valid(self, form):
+#         form.instance.project_user_name = self.request.user
+#         return super().form_valid(form)
+
+# class LocationCreateView(LoginRequiredMixin, CreateView):
+#     model = location_discipline
+#     fields = ['location_name','discipline_name']
+#     def form_valid(self, form):
+#         form.instance.project_user_name = self.request.user
+#         obj=project.objects.filter(project_user_name=self.request.user).values('project_number')
+#         form.instance.location_discipline_id=int(obj[0]['project_number'])
+#         return super().form_valid(form)
+
+# class DrawingCreateView(LoginRequiredMixin, CreateView):
+#     model = drawing
+#     fields = "__all__"
+
+#     def form_valid(self, form):
+#         form.instance.project_user_name = self.request.user
+#         return super().form_valid(form)
+
+# class WeldCreateView(LoginRequiredMixin, CreateView):
+#     model = weld
+#     fields = "__all__"
+
+#     def form_valid(self, form):
+#         form.instance.project_user_name = self.request.user
+#         return super().form_valid(form)
+
+
+# class WeldActionCreateView(LoginRequiredMixin, CreateView):
+#     model = weld_action
+#     fields = "__all__"
+
+#     def form_valid(self, form):
+#         form.instance.project_user_name = self.request.user
+#         return super().form_valid(form)
+
+
+
+# class HeatCreateView(LoginRequiredMixin, CreateView):
+#     model = heat_calc
+#     fields=['current_A', 'voltage_V','time_SS','length_MM','heat_calc_id']
+
+#     def form_valid(self, form):
+#         form.instance.project_user_name = self.request.user
+#         obj=heat_calc
+#         form.instance.heat_input=obj.activate_calculation(form.instance.current_A,form.instance.voltage_V,form.instance.time_SS,form.instance.length_MM)
+#         return super().form_valid(form)
+# class GalleryCreateView(LoginRequiredMixin, CreateView):
+#     model = gallery
+#     fields='__all__'
+    
+#     def form_valid(self, form):
+#         form.instance.project_user_name = self.request.user
+#         return super().form_valid(form)
+
+# class InspectionCreateView(LoginRequiredMixin, CreateView):
+#     model = activity_inspection_action
+#     fields='__all__'
+    
+#     def form_valid(self, form):
+#         form.instance.project_user_name = self.request.user
+        # return super().form_valid(form) 

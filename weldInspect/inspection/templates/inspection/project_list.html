@@ -1,0 +1,48 @@
+{% extends "inspection/base.html" %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+{% block content %}
+<article class="media content-section">
+  <div class="media-body">
+    <form method="GET">
+      {{filter.form|crispy}}
+  
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <br>
+    <table style=" border:1px solid black;width:100%;border-collapse: collapse;">
+  <tr>
+      <th style=" border:1px solid black;"> Project Number</th>
+      <th style=" border:1px solid black;"> Report Number</th> 
+      <th style=" border:1px solid black;"> Date</th> 
+      <th style=" border:1px solid black;"> Owner </th>
+  </tr>
+      {% for column in filter.qs %}
+      <tr>
+          <td style=" border:1px solid black;"><a class="nav-item nav-link" style="color:firebrick;" href="{% url 'inspection-overall' column.project_number %}">{{column.project_number}}</a></td>
+          <td style=" border:1px solid black;">{{column.report_number}}</td>
+          <td style=" border:1px solid black;" class="datepicker">{{column.data_perform}}</td>
+          <td style=" border:1px solid black;">{{column.project_user_name}}</td>
+      </tr>
+      {% endfor %}
+
+</table>
+  </div>
+</article>
+{% endblock content %}
+
+<!-- <table style=" border:1px solid black;width:100%;border-collapse: collapse;">
+  <tr>
+      <th style=" border:1px solid black;"> Project Number</th>
+      <th style=" border:1px solid black;"> Report Number</th> 
+      <th style=" border:1px solid black;"> Owner </th>
+  </tr>
+      {% for column in data %}
+      <tr>
+          <td style=" border:1px solid black;">{{column.project_number}}</td>
+          <td style=" border:1px solid black;">{{column.report_number}}</td>
+          <td style=" border:1px solid black;">{{column.project_user_name}}</td>
+      </tr>
+      {% endfor %}
+
+</table> -->

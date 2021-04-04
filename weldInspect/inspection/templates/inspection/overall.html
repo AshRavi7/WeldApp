@@ -1,0 +1,20 @@
+{% extends "inspection/base.html" %}
+{% block content %}
+<article class="media content-section">
+    <div class="media-body">
+      <div class="article-metadata">
+        <h4> {{ location}}</h4>
+        <!-- <h4>Date peformed: {{ object.data_perform|date:"F d, Y" }}</h4> -->
+      </div>
+      <h4> {{ weld_action}}</h4>
+      <h4> {{ drawing}}</h4>
+      <h4> {{ weld}}</h4>
+      {% for data in inspection %}
+      <h4> {{ data}}</h4>
+      {% endfor %}
+      <!-- <h5 class="article-title">Project # {{ object.project_number }}</h5>
+      <h5 class="article-title">Report # {{ object.report_number }}</h5>
+      <a href="{% url 'inspection-new' %}" class="btn btn-primary">Back to Inspection</a> -->
+    </div>
+  </article>
+{% endblock content %}

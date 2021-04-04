@@ -1,35 +1,54 @@
 body {
-  background: #d7e2e2;
-  color: #333333;
+  /* background: #d7e2e2; */
+  /* color: #333333; */
   margin-top: 5rem;
+  background: url('/media/weldpic2.jpg');
+  background-size: 1800px 900px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-attachment: fixed;
 }
 
-h1, h2, h3, h4, h5, h6 {
+/* .cover {
+	background: url('/media/weldpic2.jpg');
+  background-size: 1800px 900px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-attachment: fixed;
+} */
+h1, h2, h4, h6 {
   color: #3a3939;
 }
 
+h3,h5{
+  color:#f6f9fa
+}
 ul {
   margin: 0;
 }
 
 .bg-steel {
-  background-color: #1b1b1d;
+  background-color:#000000;
+
 }
 
 .site-header .navbar-nav .nav-link {
-  color: #f6f9fa;
+  color: #fdfdfd;
+  font-size: medium;
 }
 
 .site-header .navbar-nav .nav-link:hover {
-  color: #fafcfd;
+  color: #fdfdfd;
+  font-size: medium;
 }
 
 .site-header .navbar-nav .nav-link.active {
   font-weight: 500;
+  font-size: medium;
 }
 
 .content-section {
-  background: #ffffff;
+  background: #e9d6af;
   padding: 10px 20px;
   border: 1px solid #dddddd;
   border-radius: 3px;

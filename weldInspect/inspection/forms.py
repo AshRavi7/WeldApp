@@ -2,11 +2,16 @@ from django.forms import fields
 from .models import activity_inspection_action, drawing, gallery, heat_calc, project,location_discipline, weld, weld_action
 from django import forms
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 class projectForm(forms.ModelForm):
     class Meta:
         model = project
         fields=['project_number','report_number','data_perform']
+        widgets = {
+            'data_perform': DateInput(),
+        }
 
 class LocationForm(forms.ModelForm):
     class Meta:

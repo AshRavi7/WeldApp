@@ -1,22 +1,5 @@
 from django.urls import path
-from .views import (
-    project_view,
-    ProjectDetailView,
-    location_view,
-    LocationDetailView,
-    DrawingDetailView,
-    drawing_view,
-    WeldDetailView,
-    weld_view,
-    WeldActionDetailView,
-    weldaction_view,
-    heat_view,
-    HeatDetailView,
-    gallery_view,
-    GalleryDetailView,
-    InspectionDetailView,
-    actinspection_view
-)
+from .views import *
 from . import views
 
 urlpatterns = [
@@ -39,4 +22,7 @@ urlpatterns = [
     path('new/gallery',views.gallery_view,name='inspection-gallery'),
     path('new/inspection/<int:pk>/',InspectionDetailView.as_view(),name='inspection-detail'),
     path('new/inspection',views.actinspection_view,name='inspection-inspection'),
+    path('overview/',views.overview,name='inspection-overview'),
+    path('overview/proj',projectListView.as_view(),name='inspection-project_view'),
+    path('overall/<int:proj_value>/',views.overall_view,name='inspection-overall'),
     ]

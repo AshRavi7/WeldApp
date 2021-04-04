@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'inspection.apps.InspectionConfig',
     'users.apps.UsersConfig',
     'crispy_forms',
+    'django_filters',
+    'widget_tweaks',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

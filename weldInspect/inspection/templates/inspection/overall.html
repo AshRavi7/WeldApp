@@ -2,19 +2,88 @@
 {% block content %}
 <article class="media content-section">
     <div class="media-body">
-      <div class="article-metadata">
-        <h4> {{ location}}</h4>
-        <!-- <h4>Date peformed: {{ object.data_perform|date:"F d, Y" }}</h4> -->
-      </div>
-      <h4> {{ weld_action}}</h4>
-      <h4> {{ drawing}}</h4>
-      <h4> {{ weld}}</h4>
-      {% for data in inspection %}
-      <h4> {{ data}}</h4>
-      {% endfor %}
-      <!-- <h5 class="article-title">Project # {{ object.project_number }}</h5>
-      <h5 class="article-title">Report # {{ object.report_number }}</h5>
-      <a href="{% url 'inspection-new' %}" class="btn btn-primary">Back to Inspection</a> -->
+        <table style=" border:1px solid black;width:100%;border-collapse: collapse;">
+            <tr>
+                <th style=" border:1px solid black;"> Location</th>
+                <th style=" border:1px solid black;"> Discipline</th>
+                <th style=" border:1px solid black;"> before_welding</th>
+                <th style=" border:1px solid black;"> during_welding</th>
+                <th style=" border:1px solid black;"> after_welding</th>
+                <th style=" border:1px solid black;"> drawing</th>
+                <th style=" border:1px solid black;"> weld</th>
+            </tr>
+
+            <tr>
+                <td style=" border:1px solid black;">{{location.location_name}}</td>
+                <td style=" border:1px solid black;">{{location.discipline_name}}</td>
+                <td style=" border:1px solid black;">{{weld_action.before_welding}}</td>
+                <td style=" border:1px solid black;">{{weld_action.during_welding}}</td>
+                <td style=" border:1px solid black">{{weld_action.after_welding}}</td>
+                <td style=" border:1px solid black;">{{drawing.drawing_number}}</td>
+                <td style=" border:1px solid black;">{{weld.weld_number}}</td>
+            </tr>
+
+        </table>
+        <br>
+        <table style=" border:1px solid black ;width:100%;border-collapse: collapse;">
+            <tr>
+                <th style=" border:1px solid black;"> according</th>
+                <th style=" border:1px solid black;"> not_according</th>
+                <th style=" border:1px solid black;"> correction_action</th>
+                <th style=" border:1px solid black;"> comment</th>
+                <th style=" border:1px solid black;"> description</th>
+            </tr>
+            {% for data in inspection %}
+            <tr>
+                <td style=" border:1px solid black;"> {{data.according}}</td>
+                <td style=" border:1px solid black;"> {{data.not_according}}</td>
+                <td style=" border:1px solid black;"> {{data.correction_action}}</td>
+                <td style=" border:1px solid black;"> {{data.comment}}</td>
+                <td style=" border:1px solid black;"> {{data.act_desp_action_descp}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+        <table style=" border:1px solid black;width:100%;border-collapse: collapse;">
+            <tr>
+                <th style=" border:1px solid black;"> current</th>
+                <th style=" border:1px solid black;"> voltage</th>
+                <th style=" border:1px solid black;"> time </th>
+                <th style=" border:1px solid black;"> length</th>
+                <th style=" border:1px solid black;"> heat</th>
+                <th style=" border:1px solid black;"> photo</th>
+            </tr>
+
+            <tr>
+                <td style=" border:1px solid black;">{{heat.current_A}}</td>
+                <td style=" border:1px solid black;">{{heat.voltage_V}}</td>
+                <td style=" border:1px solid black;">{{heat.time_SS}}</td>
+                <td style=" border:1px solid black;">{{heat.length_MM}}</td>
+                <td style=" border:1px solid black;">{{heat.heat_input}}</td>
+                <td style=" border:1px solid black;"> <img class="rounded-circle account-img"
+                        src="{{ gallery.photo.url }}"></td>
+            </tr>
+
+        </table>
     </div>
-  </article>
+</article>
 {% endblock content %}
+
+<!-- <article class="media content-section">
+    <div class="media-body">
+        <div class="article-metadata">
+            <h4> {{ location}}</h4>
+        </div>
+        <h4> {{ weld_action}}</h4>
+        <h4> {{ drawing}}</h4>
+        <h4> {{ weld}}</h4>
+        {% for data in inspection %}
+        <h4> {{ data}}</h4>
+        {% endfor %}
+        <h4> {{ heat }}</h4>
+        <br>
+        <div class="media">
+            <img class="rounded-circle account-img" src="{{ gallery.photo.url }}">
+        </div>
+    </div>
+</article> -->

@@ -56,7 +56,7 @@ class heat_calc(models.Model):
     heat_calc_id=models.OneToOneField(project,on_delete=models.CASCADE,primary_key=True)
     
     def __str__(self):
-        return str(self.heat_calc_id)
+        return  f' current_A: {self.current_A} voltage_V: {self.voltage_V}  time_SS: {self. time_SS} length_MM: {self.length_MM} heat_input:{self.heat_input}'
     
     # def get_absolute_url(self):
     #     return reverse('inspection-new')
@@ -69,7 +69,7 @@ class heat_calc(models.Model):
     #     return self.heat_input
     @staticmethod
     def activate_calculation(c,v,t,l):
-        return ((c*v*t)//l*1000)
+        return ((c*v*t)//(l*1000))
 
 class drawing(models.Model):
     drawing_number=models.CharField(max_length=200,primary_key=True)
@@ -98,7 +98,7 @@ class gallery(models.Model):
     photo_report_id=models.OneToOneField(project,on_delete=models.CASCADE,primary_key=True)
     
     def __str__(self):
-        return str(self.photo_report_id)
+        return f'Photo: {self.photo}'
     
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)
@@ -132,7 +132,7 @@ class activity_inspection_action(models.Model):
     not_according=models.BooleanField(default=False)
     correction_action=models.BooleanField(default=False)
     comment=models.CharField(max_length=100,blank=True)
-    inspection_id=models.OneToOneField(project,on_delete=models.CASCADE,primary_key=True)
+    inspection_id=models.ForeignKey(project,on_delete=models.CASCADE)
     act_desp_action_descp=models.ForeignKey(activity_description,on_delete=models.CASCADE)
 
     def __str__(self):

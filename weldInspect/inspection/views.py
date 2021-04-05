@@ -50,7 +50,7 @@ def location_view(request):
             form = LocationForm(request.POST)
             if form.is_valid():
                 obj=form.save(commit=False)
-                obj.location_discipline_id=project.objects.filter(project_user_name_id=request.user.id).first()
+                obj.location_discipline_id=project.objects.filter(project_user_name_id=request.user.id).latest('project_number')
                 obj.save()
                 return redirect('location-detail',pk=obj.pk)
     form = LocationForm()
@@ -67,7 +67,7 @@ def drawing_view(request):
             form = DrawingForm(request.POST)
             if form.is_valid():
                 obj=form.save(commit=False)
-                obj.drawing_id=project.objects.filter(project_user_name_id=request.user.id).first()
+                obj.drawing_id=project.objects.filter(project_user_name_id=request.user.id).latest('project_number')
                 obj.save()
                 return redirect('drawing-detail',pk=obj.pk)
     form = DrawingForm()
@@ -84,8 +84,8 @@ def weld_view(request):
             form = WeldForm(request.POST)
             if form.is_valid():
                 obj=form.save(commit=False)
-                data=project.objects.filter(project_user_name_id=request.user.id).first()
-                obj.weld_id=drawing.objects.filter(drawing_id=data).first()
+                data=project.objects.filter(project_user_name_id=request.user.id).latest('project_number')
+                obj.weld_id=drawing.objects.filter(drawing_id=data).latest('drawing_number')
                 obj.save()
                 return redirect('weld-detail',pk=obj.pk)
     form = WeldForm()
@@ -102,7 +102,7 @@ def weldaction_view(request):
             form = WeldActionForm(request.POST)
             if form.is_valid():
                 obj=form.save(commit=False)
-                obj.weld_action_project_id=project.objects.filter(project_user_name_id=request.user.id).first()
+                obj.weld_action_project_id=project.objects.filter(project_user_name_id=request.user.id).latest('project_number')
                 obj.save()
                 return redirect('weldAction-detail',pk=obj.pk)
     form = WeldActionForm()
@@ -119,9 +119,9 @@ def actinspection_view(request):
             form = ActInspectionForm(request.POST)
             if form.is_valid():
                 obj=form.save(commit=False)
-                obj.inspection_id=project.objects.filter(project_user_name_id=request.user.id).first()
+                obj.inspection_id=project.objects.filter(project_user_name_id=request.user.id).latest('project_number')
                 obj.save()
-                return redirect('inspection-detail',pk=obj.pk)
+                return redirect('inspection-detail',pk=obj.inspection_id)
     form = ActInspectionForm()
     return render(request, 'inspection/activity_inspection_action_form.html', {'form': form})
 
@@ -138,7 +138,7 @@ def heat_view(request):
                 obj=form.save(commit=False)
                 call=heat_calc
                 form.instance.heat_input=call.activate_calculation(form.instance.current_A,form.instance.voltage_V,form.instance.time_SS,form.instance.length_MM)
-                obj.heat_calc_id=project.objects.filter(project_user_name_id=request.user.id).first()
+                obj.heat_calc_id=project.objects.filter(project_user_name_id=request.user.id).latest('project_number')
                 obj.save()
                 return redirect('heat-detail',pk=obj.pk)
     form = HeatForm()
@@ -155,7 +155,7 @@ def gallery_view(request):
             form = GalleryForm(request.POST)
             if form.is_valid():
                 obj=form.save(commit=False)
-                obj.photo_report_id=project.objects.filter(project_user_name_id=request.user.id).first()
+                obj.photo_report_id=project.objects.filter(project_user_name_id=request.user.id).latest('project_number')
                 obj.save()
                 return redirect('gallery-detail',pk=obj.pk)
     form = GalleryForm()
@@ -187,7 +187,9 @@ def overall_view(request,proj_value):
     value=drawing_obj.drawing_number
     weld_obj=weld.objects.select_related('weld_id').get(weld_id_id=value)
     inspection_obj=activity_inspection_action.objects.select_related('inspection_id').filter(inspection_id_id=proj_value)
-    context={'location':loc_obj,'weld_action':weld_action_obj,'drawing':drawing_obj,'weld':weld_obj,'inspection':inspection_obj}
+    heat_obj=heat_calc.objects.select_related('heat_calc_id').get(heat_calc_id_id=proj_value)
+    gallery_obj=gallery.objects.select_related('photo_report_id').get(photo_report_id_id=proj_value)
+    context={'location':loc_obj,'weld_action':weld_action_obj,'drawing':drawing_obj,'weld':weld_obj,'inspection':inspection_obj,'heat':heat_obj,'gallery':gallery_obj}
     return render(request, 'inspection/overall.html', context)
         
     #         form = GalleryForm(request.POST)

@@ -3,8 +3,8 @@ from .views import *
 from . import views
 
 urlpatterns = [
-    path('', views.home, name='inspection-home'),
-    path('about/',views.about,name='inspection-about'),
+    path('', views.about, name='inspection-home'),
+    # path('about/',views.about,name='inspection-about'),
     path('new/',views.new,name='inspection-new'),
     path('new/proj/<int:pk>/',ProjectDetailView.as_view(),name='project-detail'),
     path('new/proj',views.project_view,name='inspection-project'),

@@ -16,8 +16,8 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 from .filters import ProjectFilter
 
-def home(request):
-    return render(request, 'inspection/base.html')
+# def home(request):
+#     return render(request, 'inspection/base.html')
 
 def about(request):
     return render(request,'inspection/about.html')

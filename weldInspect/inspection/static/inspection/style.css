@@ -33,12 +33,12 @@ ul {
 }
 
 .site-header .navbar-nav .nav-link {
-  color: #fdfdfd;
+  color: #dfd1b6;
   font-size: medium;
 }
 
 .site-header .navbar-nav .nav-link:hover {
-  color: #fdfdfd;
+  color: #dfd1b6;
   font-size: medium;
 }
 
@@ -48,7 +48,7 @@ ul {
 }
 
 .content-section {
-  background: #e9d6af;
+  background: #dfd1b6;
   padding: 10px 20px;
   border: 1px solid #dddddd;
   border-radius: 3px;
@@ -101,3 +101,14 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+/* .nav-item .nav-link{
+  color: darkred;
+} */
+
+/* @media all and (max-width: 900px) { */
+/* .content-section
+{
+width: 100%;
+} */
+/* } */

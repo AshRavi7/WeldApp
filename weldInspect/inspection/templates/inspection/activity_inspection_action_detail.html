@@ -7,10 +7,12 @@
       </div>
       <h6 class="article-title">according: {{ object.according}}</h6>
       <h6 class="article-content">not_according: {{ object.not_according }}</h6>
-      <h6 class="article-content">comment: {{ object.correction_action }}</h6>
+      <h6 class="article-content">correction_action: {{ object.correction_action }}</h6>
+      <h6 class="article-content">comment: {{ object.comment }}</h6>
       <h6 class="article-content">act_desp_action_descp: {{ object.act_desp_action_descp }}</h6>
-      <a href="{% url 'inspection-inspection' %}" class="btn btn-primary">Back to activity inspection</a>
-      <a href="{% url 'inspection-new' %}" class="btn btn-primary">Back to Inspection</a>
+      <br>
+      <a href="{% url 'inspection-inspection' %}" style="color:firebrick;" class="btn btn-primary">another inspection?</a>
+
     </div>
   </article>
 {% endblock content %}

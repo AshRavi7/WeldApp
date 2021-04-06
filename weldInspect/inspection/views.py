@@ -22,8 +22,8 @@ from .filters import ProjectFilter
 def about(request):
     return render(request,'inspection/about.html')
 
-def new(request):
-    return render(request,'inspection/new_inspection.html')
+# def new(request):
+#     return render(request,'inspection/new_inspection.html')
 
 
 @login_required
@@ -136,8 +136,9 @@ def heat_view(request):
             form = HeatForm(request.POST)
             if form.is_valid():
                 obj=form.save(commit=False)
-                call=heat_calc
-                form.instance.heat_input=call.activate_calculation(form.instance.current_A,form.instance.voltage_V,form.instance.time_SS,form.instance.length_MM)
+                model_call=heat_calc
+                form.instance.heat_input=model_call.activate_calculation(obj)
+                # form.instance.heat_input=data
                 obj.heat_calc_id=project.objects.filter(project_user_name_id=request.user.id).latest('project_number')
                 obj.save()
                 return redirect('heat-detail',pk=obj.pk)
@@ -165,9 +166,9 @@ class GalleryDetailView(DetailView):
     model = gallery
     template_name='inspection/gallery_detail.html'
 
-@login_required
-def overview(request):
-      return render(request,'inspection/overview.html')
+# @login_required
+# def overview(request):
+#       return render(request,'inspection/overview.html')
 
 class projectListView(ListView):
     model=project
@@ -185,7 +186,7 @@ def overall_view(request,proj_value):
     weld_action_obj=weld_action.objects.select_related('weld_action_project_id').get(weld_action_project_id_id=proj_value)
     drawing_obj=drawing.objects.select_related('drawing_id').get(drawing_id_id=proj_value)
     value=drawing_obj.drawing_number
-    weld_obj=weld.objects.select_related('weld_id').get(weld_id_id=value)
+    weld_obj=weld.objects.select_related('weld_id').get(weld_id_id=proj_value)
     inspection_obj=activity_inspection_action.objects.select_related('inspection_id').filter(inspection_id_id=proj_value)
     heat_obj=heat_calc.objects.select_related('heat_calc_id').get(heat_calc_id_id=proj_value)
     gallery_obj=gallery.objects.select_related('photo_report_id').get(photo_report_id_id=proj_value)

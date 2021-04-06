@@ -19,7 +19,7 @@
   </tr>
       {% for column in filter.qs %}
       <tr>
-          <td style=" border:1px solid black;"><a class="nav-item nav-link" style="color:rgb(25, 28, 219);" href="{% url 'inspection-overall' column.project_number %}">{{column.project_number}}</a></td>
+          <td style=" border:1px solid black;"><a class="nav-item nav-link" style="color:firebrick;" href="{% url 'inspection-overall' column.project_number %}">{{column.project_number}}</a></td>
           <td style=" border:1px solid black;">{{column.report_number}}</td>
           <td style=" border:1px solid black;" class="datepicker">{{column.data_perform}}</td>
           <td style=" border:1px solid black;">{{column.project_user_name}}</td>

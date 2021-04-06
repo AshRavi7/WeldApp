@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.about, name='inspection-home'),
     # path('about/',views.about,name='inspection-about'),
-    path('new/',views.new,name='inspection-new'),
+    # path('new/',views.new,name='inspection-new'),
     path('new/proj/<int:pk>/',ProjectDetailView.as_view(),name='project-detail'),
     path('new/proj',views.project_view,name='inspection-project'),
     path('new/loc/<str:pk>/',LocationDetailView.as_view(),name='location-detail'),
@@ -22,7 +22,6 @@ urlpatterns = [
     path('new/gallery',views.gallery_view,name='inspection-gallery'),
     path('new/inspection/<int:pk>/',InspectionDetailView.as_view(),name='inspection-detail'),
     path('new/inspection',views.actinspection_view,name='inspection-inspection'),
-    path('overview/',views.overview,name='inspection-overview'),
     path('overview/proj',projectListView.as_view(),name='inspection-project_view'),
     path('overall/<int:proj_value>/',views.overall_view,name='inspection-overall'),
     ]

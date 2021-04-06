@@ -20,9 +20,9 @@ class project(models.Model):
     #     return reverse('inspection-new')
 
 class location_discipline(models.Model):
-    location_name=models.CharField(max_length=200,primary_key=True)
+    location_name=models.CharField(max_length=200)
     discipline_name=models.CharField(max_length=200)
-    location_discipline_id=models.ForeignKey(project,on_delete=models.CASCADE)
+    location_discipline_id=models.OneToOneField(project,on_delete=models.CASCADE,primary_key=True)
     
     def __str__(self):
         return f'Location: {self.location_name} Discipline: {self.discipline_name}'
@@ -58,22 +58,12 @@ class heat_calc(models.Model):
     def __str__(self):
         return  f' current_A: {self.current_A} voltage_V: {self.voltage_V}  time_SS: {self. time_SS} length_MM: {self.length_MM} heat_input:{self.heat_input}'
     
-    # def get_absolute_url(self):
-    #     return reverse('inspection-new')
-
-    # def get_absolute_url(self):
-    #     return reverse('heat-detail', kwargs={'pk': self.pk})
-    
-    # def calculation_of_heat(self,c,v,t,l):
-    #     self.heat_input=int((c*v*t)//l*1000)
-    #     return self.heat_input
-    @staticmethod
-    def activate_calculation(c,v,t,l):
-        return ((c*v*t)//(l*1000))
+    def activate_calculation(self):
+        return (self.current_A*self.voltage_V*self.time_SS)//(self.length_MM*1000)
 
 class drawing(models.Model):
-    drawing_number=models.CharField(max_length=200,primary_key=True)
-    drawing_id=models.ForeignKey(project,on_delete=models.CASCADE)
+    drawing_number=models.CharField(max_length=200)
+    drawing_id=models.OneToOneField(project,on_delete=models.CASCADE,primary_key=True)
     
     def __str__(self):
         return f'drawing_number: {self.drawing_number}'

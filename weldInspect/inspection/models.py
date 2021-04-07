@@ -58,8 +58,9 @@ class heat_calc(models.Model):
     def __str__(self):
         return  f' current_A: {self.current_A} voltage_V: {self.voltage_V}  time_SS: {self. time_SS} length_MM: {self.length_MM} heat_input:{self.heat_input}'
     
-    def activate_calculation(self):
-        return (self.current_A*self.voltage_V*self.time_SS)//(self.length_MM*1000)
+    @staticmethod
+    def activate_calculation(a,v,t,l):
+        return int((a*v*t)//(l*1000))
 
 class drawing(models.Model):
     drawing_number=models.CharField(max_length=200)

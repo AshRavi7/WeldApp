@@ -121,7 +121,7 @@ def actinspection_view(request):
                 obj=form.save(commit=False)
                 obj.inspection_id=project.objects.filter(project_user_name_id=request.user.id).latest('project_number')
                 obj.save()
-                return redirect('inspection-detail',pk=obj.inspection_id)
+                return redirect('inspection-detail',pk=obj.id)
     form = ActInspectionForm()
     return render(request, 'inspection/activity_inspection_action_form.html', {'form': form})
 
@@ -136,8 +136,9 @@ def heat_view(request):
             form = HeatForm(request.POST)
             if form.is_valid():
                 obj=form.save(commit=False)
-                model_call=heat_calc
-                form.instance.heat_input=model_call.activate_calculation(obj)
+                # model_call=heat_calc
+                # form.instance.heat_input=model_call.activate_calculation(obj) 
+                obj.heat_input=form.instance.current_A*form.instance.voltage_V*form.instance.time_SS//form.instance.length_MM*1000
                 # form.instance.heat_input=data
                 obj.heat_calc_id=project.objects.filter(project_user_name_id=request.user.id).latest('project_number')
                 obj.save()
